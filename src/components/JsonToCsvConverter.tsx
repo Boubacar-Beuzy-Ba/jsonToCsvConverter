@@ -23,10 +23,12 @@ const JsonToCsvConverter: React.FC = () => {
   const handleExport = () => {
     const blob = new Blob([csvOutput], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
-
-    if (navigator.msSaveBlob) {
-      // IE 10+
-      navigator.msSaveBlob(blob, 'converted_data.csv');
+  
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ((navigator as any).msSaveBlob) {
+      // Type assertion to inform TypeScript about the msSaveBlob property
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (navigator as any).msSaveBlob(blob, 'converted_data.csv');
     } else {
       // Other browsers
       const url = URL.createObjectURL(blob);
@@ -37,7 +39,7 @@ const JsonToCsvConverter: React.FC = () => {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     }
-  };
+  };  
 
   return (
     <>
